@@ -131,9 +131,6 @@ def collate_uniform(batch, n_assets_range=(5, 10), lookback_range=(2, 20), horiz
     if asset_ixs is None:
         n_assets = torch.randint(low=n_assets_range[0], high=min(n_assets_max + 1, n_assets_range[1]), size=(1,))[0]
         asset_ixs = torch.multinomial(torch.ones(n_assets_max), n_assets.item(), replacement=False)
-    else:
-        pass
-
     # sample lookback
     lookback = torch.randint(low=lookback_range[0], high=min(lookback_max + 1, lookback_range[1]), size=(1,))[0]
 

@@ -79,11 +79,7 @@ class History:
             If epoch given, then a results only over this epoch. If epoch is `None` then print results over all epochs.
 
         """
-        if epoch is None:
-            df = self.metrics
-
-        else:
-            df = self.metrics_per_epoch(epoch)
+        df = self.metrics if epoch is None else self.metrics_per_epoch(epoch)
         pd.options.display.float_format = '{:,.3f}'.format
         print(df.groupby(['model', 'metric', 'epoch', 'dataloader'])['value'].mean().to_string())
 
@@ -172,7 +168,7 @@ class Run:
             pass
 
         elif isinstance(metrics, dict):
-            if not all([isinstance(x, Loss) for x in metrics.values()]):
+            if not all(isinstance(x, Loss) for x in metrics.values()):
                 raise TypeError('All values of metrics need to be Loss.')
 
             if 'loss' in metrics:
@@ -190,7 +186,9 @@ class Run:
             pass
 
         elif isinstance(val_dataloaders, dict):
-            if not all([isinstance(x, RigidDataLoader) for x in val_dataloaders.values()]):
+            if not all(
+                isinstance(x, RigidDataLoader) for x in val_dataloaders.values()
+            ):
                 raise TypeError('All values of val_dataloaders need to be RigidDataLoader.')
 
             self.val_dataloaders.update(val_dataloaders)
@@ -205,7 +203,7 @@ class Run:
             pass
 
         elif isinstance(benchmarks, dict):
-            if not all([isinstance(x, Benchmark) for x in benchmarks.values()]):
+            if not all(isinstance(x, Benchmark) for x in benchmarks.values()):
                 raise TypeError('All values of benchmarks need to be a Benchmark.')
 
             if 'main' in benchmarks:

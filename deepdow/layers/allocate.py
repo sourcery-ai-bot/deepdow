@@ -158,9 +158,7 @@ class NCO(nn.Module):
 
             w_l.append(w_final)
 
-        res = torch.stack(w_l, dim=0)
-
-        return res
+        return torch.stack(w_l, dim=0)
 
 
 class NumericalMarkowitz(nn.Module):
@@ -475,9 +473,7 @@ class SparsemaxAllocator(torch.nn.Module):
         x = cp.Parameter(n_assets)
         w = cp.Variable(n_assets)
         obj = cp.sum_squares(x - w)
-        cons = [cp.sum(w) == 1,
-                0. <= w,
-                w <= max_weight]
+        cons = [cp.sum(w) == 1, w >= 0., w <= max_weight]
         prob = cp.Problem(cp.Minimize(obj), cons)
 
         self.layer = CvxpyLayer(prob, parameters=[x], variables=[w])

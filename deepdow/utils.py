@@ -108,7 +108,7 @@ class PandasChecks:
             If indices/colums do not agree.
 
         """
-        if not all([isinstance(x, (pd.Series, pd.DataFrame)) for x in frames]):
+        if not all(isinstance(x, (pd.Series, pd.DataFrame)) for x in frames):
             raise TypeError('Some elements are not pd.Series or pd.DataFrame')
 
         reference_index = frames[0].index

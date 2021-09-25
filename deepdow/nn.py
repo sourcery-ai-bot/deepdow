@@ -153,10 +153,7 @@ class BachelierNet(torch.nn.Module, Benchmark):
         gamma_sqrt_all = torch.ones(len(x)).to(device=x.device, dtype=x.dtype) * self.gamma_sqrt
         alpha_all = torch.ones(len(x)).to(device=x.device, dtype=x.dtype) * self.alpha
 
-        # weights
-        weights = self.portfolio_opt_layer(exp_rets, covmat, gamma_sqrt_all, alpha_all)
-
-        return weights
+        return self.portfolio_opt_layer(exp_rets, covmat, gamma_sqrt_all, alpha_all)
 
     @property
     def hparams(self):
@@ -262,9 +259,7 @@ class KeynesNet(torch.nn.Module, Benchmark):
 
         temperatures = torch.ones(n_samples).to(device=x.device, dtype=x.dtype) * self.temperature
 
-        weights = self.portfolio_opt_layer(x, temperatures)
-
-        return weights
+        return self.portfolio_opt_layer(x, temperatures)
 
     @property
     def hparams(self):
@@ -352,9 +347,7 @@ class LinearNet(torch.nn.Module, Benchmark):
         x = self.linear(x)
 
         temperatures = torch.ones(n_samples).to(device=x.device, dtype=x.dtype) * self.temperature
-        weights = self.allocate_layer(x, temperatures)
-
-        return weights
+        return self.allocate_layer(x, temperatures)
 
     @property
     def hparams(self):
@@ -474,9 +467,9 @@ class ThorpNet(torch.nn.Module, Benchmark):
         gamma_all = torch.ones(len(x)).to(device=x.device, dtype=x.dtype) * self.gamma_sqrt
         alpha_all = torch.ones(len(x)).to(device=x.device, dtype=x.dtype) * self.alpha
 
-        weights = self.portfolio_opt_layer(exp_returns_all, covariance_all, gamma_all, alpha_all)
-
-        return weights
+        return self.portfolio_opt_layer(
+            exp_returns_all, covariance_all, gamma_all, alpha_all
+        )
 
     @property
     def hparams(self):

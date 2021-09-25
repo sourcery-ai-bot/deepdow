@@ -61,9 +61,7 @@ class InverseVolatility(Benchmark):
         x_rets = x[:, self.returns_channel, ...]
         vols = x_rets.std(dim=1) if self.use_std else x_rets.var(dim=1)
         ivols = 1 / (vols + eps)
-        weights = ivols / ivols.sum(dim=1, keepdim=True)
-
-        return weights
+        return ivols / ivols.sum(dim=1, keepdim=True)
 
     @property
     def hparams(self):

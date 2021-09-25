@@ -363,9 +363,7 @@ class Net(torch.nn.Module, Benchmark):
                                            cov_sqrt[None, ...],
                                            self.gamma_sqrt,
                                            torch.zeros(1).to(device=x.device, dtype=x.dtype))
-        weights_filled = torch.repeat_interleave(weights, n, dim=0)
-
-        return weights_filled
+        return torch.repeat_interleave(weights, n, dim=0)
 
 
 # %%

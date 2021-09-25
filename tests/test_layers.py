@@ -481,12 +481,26 @@ class TestRNN:
         hidden_size_a = int(hidden_size // n_dir)
 
         if cell_type == 'RNN':
-            assert n_parameters == n_dir * (
-                    (n_channels * hidden_size_a) + (hidden_size_a * hidden_size_a) + 2 * hidden_size_a)
+            assert n_parameters == (
+                n_dir
+                * (
+                    n_channels * hidden_size_a
+                    + hidden_size_a ** 2
+                    + 2 * hidden_size_a
+                )
+            )
+
 
         else:
-            assert n_parameters == n_dir * 4 * (
-                    (n_channels * hidden_size_a) + (hidden_size_a * hidden_size_a) + 2 * hidden_size_a)
+            assert n_parameters == (
+                n_dir
+                * 4
+                * (
+                    n_channels * hidden_size_a
+                    + hidden_size_a ** 2
+                    + 2 * hidden_size_a
+                )
+            )
 
     def test_error(self):
 

@@ -74,9 +74,7 @@ def generate_metrics_table(benchmarks, dataloader, metrics, device=None, dtype=N
                                                  'metric': metric_name,
                                                  'value': metric_per_s}))
 
-    metrics_table = pd.concat(all_entries)
-
-    return metrics_table
+    return pd.concat(all_entries)
 
 
 def generate_cumrets(benchmarks, dataloader, device=None, dtype=None, returns_channel=0,
@@ -142,9 +140,10 @@ def generate_cumrets(benchmarks, dataloader, device=None, dtype=None, returns_ch
             all_entries[bm_name].append(pd.DataFrame(cumrets.detach().cpu().numpy(),
                                                      index=timestamps))
 
-    cumrets_dict = {bm_name: pd.concat(entries).sort_index() for bm_name, entries in all_entries.items()}
-
-    return cumrets_dict
+    return {
+        bm_name: pd.concat(entries).sort_index()
+        for bm_name, entries in all_entries.items()
+    }
 
 
 def plot_metrics(metrics_table):

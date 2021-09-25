@@ -29,9 +29,7 @@ def covariance(x, y):
     xm = x - mean_x  # (n_samples, horizon)
     ym = y - mean_y  # (n_samples, horizon)
 
-    cov = (xm * ym).sum(dim=1) / horizon
-
-    return cov
+    return (xm * ym).sum(dim=1) / horizon
 
 
 def log2simple(x):
@@ -353,15 +351,15 @@ class Loss:
         new : Loss
             Instance of a ``Loss`` representing the `self ** power`.
         """
-        if isinstance(power, (int, float)):
-            new_instance = Loss()
-            new_instance._call = MethodType(lambda inst, weights, y: self(weights, y) ** power, new_instance)
-            new_instance._repr = MethodType(lambda inst: '({}) ** {}'.format(self.__repr__(), power),
-                                            new_instance)
-
-            return new_instance
-        else:
+        if not isinstance(power, (int, float)):
             raise TypeError('Unsupported type: {}'.format(type(power)))
+
+        new_instance = Loss()
+        new_instance._call = MethodType(lambda inst, weights, y: self(weights, y) ** power, new_instance)
+        new_instance._repr = MethodType(lambda inst: '({}) ** {}'.format(self.__repr__(), power),
+                                        new_instance)
+
+        return new_instance
 
 
 class Alpha(Loss):

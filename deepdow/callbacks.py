@@ -217,7 +217,10 @@ class EarlyStoppingCallback(Callback):
         epoch = metadata['epoch']
         stats = self.run.history.metrics_per_epoch(epoch)
 
-        if not (len(stats['lookback'].unique()) == 1 and len(stats['model'].unique()) == 1):
+        if (
+            len(stats['lookback'].unique()) != 1
+            or len(stats['model'].unique()) != 1
+        ):
             raise ValueError('EarlyStoppingCallback needs to have a single lookback and model')  # pragma: no cover
 
         stats_formatted = stats.groupby(['dataloader', 'metric'])['value'].mean().unstack(-1)
@@ -398,7 +401,10 @@ class ModelCheckpointCallback(Callback):
         epoch = metadata['epoch']
         stats = self.run.history.metrics_per_epoch(epoch)
 
-        if not (len(stats['lookback'].unique()) == 1 and len(stats['model'].unique()) == 1):
+        if (
+            len(stats['lookback'].unique()) != 1
+            or len(stats['model'].unique()) != 1
+        ):
             raise ValueError('ModelCheckpointCallback needs to have a single lookback and model')  # pragma: no cover
 
         stats_formatted = stats.groupby(['dataloader', 'metric'])['value'].mean().unstack(-1)

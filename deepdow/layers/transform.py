@@ -171,14 +171,12 @@ class Warp(torch.nn.Module):
 
         grid = torch.stack([tx, ty], dim=-1)
 
-        x_warped = nn.functional.grid_sample(x,
+        return nn.functional.grid_sample(x,
                                              grid,
                                              mode=self.mode,
                                              padding_mode=self.padding_mode,
                                              align_corners=True,
                                              )
-
-        return x_warped
 
 
 class Zoom(torch.nn.Module):
@@ -234,11 +232,9 @@ class Zoom(torch.nn.Module):
         theta = theta.to(device=x.device, dtype=x.dtype)
 
         grid = nn.functional.affine_grid(theta, x.shape, align_corners=True)
-        x_zoomed = nn.functional.grid_sample(x,
+        return nn.functional.grid_sample(x,
                                              grid,
                                              mode=self.mode,
                                              padding_mode=self.padding_mode,
                                              align_corners=True,
                                              )
-
-        return x_zoomed

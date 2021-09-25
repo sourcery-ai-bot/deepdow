@@ -150,9 +150,7 @@ class GreatNet(torch.nn.Module, Benchmark):
         x = self.dense_layer(x)
 
         temperatures = torch.ones(n_samples).to(device=x.device, dtype=x.dtype) * self.temperature
-        weights = self.allocate_layer(x, temperatures)
-
-        return weights
+        return self.allocate_layer(x, temperatures)
 
 
 # %%

@@ -25,9 +25,7 @@ class Cov2Corr(nn.Module):
         stds = torch.sqrt(torch.diagonal(covmat, dim1=1, dim2=2))
         stds_ = stds.view(n_samples, n_assets, 1)
 
-        corr = covmat / torch.matmul(stds_, stds_.permute(0, 2, 1))
-
-        return corr
+        return covmat / torch.matmul(stds_, stds_.permute(0, 2, 1))
 
 
 class CovarianceMatrix(nn.Module):
@@ -53,9 +51,12 @@ class CovarianceMatrix(nn.Module):
 
         self.sqrt = sqrt
 
-        if shrinkage_strategy is not None:
-            if shrinkage_strategy not in {'diagonal', 'identity', 'scaled_identity'}:
-                raise ValueError('Unrecognized shrinkage strategy {}'.format(shrinkage_strategy))
+        if shrinkage_strategy is not None and shrinkage_strategy not in {
+            'diagonal',
+            'identity',
+            'scaled_identity',
+        }:
+            raise ValueError('Unrecognized shrinkage strategy {}'.format(shrinkage_strategy))
 
         self.shrinkage_strategy = shrinkage_strategy
         self.shrinkage_coef = shrinkage_coef
